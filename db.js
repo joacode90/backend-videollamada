@@ -11,7 +11,8 @@ const pool = mysql.createPool({
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
-    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false // 👈 Protección SSL para la nube
+    // 🔽 Quitamos el SSL para adaptarnos al MySQL gratuito de Railway
+    ssl: false,
 });
 
 // 🔄 Convertimos el pool para poder usar "Promises" (async/await) lo cual hace el código más limpio
