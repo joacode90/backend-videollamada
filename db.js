@@ -12,7 +12,7 @@ const pool = mysql.createPool({
     connectionLimit: 10,
     queueLimit: 0,
     // 🔽 Quitamos el SSL para adaptarnos al MySQL gratuito de Railway
-    ssl: false,
+    ssl: false
 });
 
 // 🔄 Convertimos el pool para poder usar "Promises" (async/await) lo cual hace el código más limpio
