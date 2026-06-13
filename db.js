@@ -7,12 +7,12 @@ const pool = mysql.createPool({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    port: process.env.DB_PORT || 3306, // 👈 Agrega el puerto por si tu BD en la nube no usa el 3306
+    // 🔽 Forzamos a que el puerto sea procesado siempre como un número entero
+    port: parseInt(process.env.DB_PORT) || 3306,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
-    // 🔽 Quitamos el SSL para adaptarnos al MySQL gratuito de Railway
-    ssl: false
+    ssl: false // 👈 Mantenemos el SSL desactivado para la red interna
 });
 
 // 🔄 Convertimos el pool para poder usar "Promises" (async/await) lo cual hace el código más limpio
