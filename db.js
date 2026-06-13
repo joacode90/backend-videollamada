@@ -1,31 +1,25 @@
-const mysql = require('mysql2');
-require('dotenv').config(); // Carga las variables del archivo .env
+const mysql = require('mysql2/promise');
 
-// 🏊‍♂️ Creamos el pool de conexiones a la base de datos
 const pool = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    // 🔽 Forzamos a que el puerto sea procesado siempre como un número entero
-    port: parseInt(process.env.DB_PORT) || 3306,
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0,
-    ssl: false // 👈 Mantenemos el SSL desactivado para la red interna
-});
-
-// 🔄 Convertimos el pool para poder usar "Promises" (async/await) lo cual hace el código más limpio
-const promisePool = pool.promise();
-
-// 🧪 Bloque de prueba para verificar que la conexión funcione al iniciar
-pool.getConnection((err, connection) => {
-    if (err) {
-        console.error('❌ Error al conectar a la base de datos de MySQL:', err.message);
-    } else {
-        console.log('✅ ¡Conexión exitosa a la base de datos MySQL!');
-        connection.release(); // Libera la conexión de prueba
+    host: process.env.MYSQLHOST,
+    user: process.env.MYSQLUSER,
+    password: process.env.MYSQLPASSWORD,
+    database: process.env.MYSQLDATABASE,
+    port: process.env.MYSQLPORT,
+    ssl: {
+        rejectUnauthorized: false // prueba con false si da error
     }
 });
 
-module.exports = promisePool;
+// Test de conexión
+(async () => {
+    try {
+        const connection = await pool.getConnection();
+        console.log("✅ ¡Conexión exitosa a la base de datos MySQL!");
+        connection.release();
+    } catch (err) {
+        console.error("❌ Error al conectar a la base de datos:", err.message);
+    }
+})();
+
+module.exports = pool;
