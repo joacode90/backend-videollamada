@@ -1,3 +1,5 @@
+require('dotenv').config(); // 👈 ¡AQUÍ! En la línea 1, antes que cualquier otra cosa
+
 const express = require('express');
 const cors = require('cors');
 const http = require('http'); // 👈 Requerimos el módulo nativo HTTP de Node
